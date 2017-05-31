@@ -1,0 +1,85 @@
+{include file="Common/header" /}
+{include file="Common/left" /}
+<!-- 内容区域 -->
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+    <!-- 地址导航栏 -->
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        {volist name="__PARENT_MENU__" id="vo"}
+            <li>{$vo.title}</li>
+        {/volist}
+    </ul>
+    <div class="panel panel-success">
+      <div class="panel-body ">
+        <!-- 内联表单 -->
+        <div class="container-fluid">
+            <!-- <form class="form-inline col-lg-5 col-md-5 col-sm-5" action="__SELF__" method="get">
+              <div class="form-group">
+                <input type="text" name="keyword" class="form-control" placeholder="显示名称" value="{$keyword}">
+              </div>
+              <button type="submit" class="btn btn-default">搜索</button>
+            </form> -->
+
+            <div class="col-lg-6 col-md-6 col-sm-6 pull-right text-center">
+
+              <a class="btn btn-primary active" href="{:url('nodeAdd')}" role="button">添加</a>
+
+              <!-- Contextual button for informational alert messages -->
+              <a class="btn btn-info active js-Allstop" link="{:url('changeStatus', array('model'=>'node'))}" href="javascript:void(0);" role="button">禁用</a>
+
+              <!-- Indicates caution should be taken with this action -->
+              <a class="btn btn-warning active js-Allstart" link="{:url('changeStatus', array('model'=>'node'))}" href="javascript:void(0);" role="button">启用</a>
+
+              <!-- Indicates a dangerous or potentially negative action -->
+              <a class="btn btn-danger active js-Alldel" link="{:url('changeStatus', array('model'=>'node'))}" href="javascript:void(0);" role="button">删除</a>
+
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-success">
+      <div class="panel-body">
+          <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" class="check-all" name="all"></th>
+                    <th>序号</th>
+                    <th>节点结构[i]</th>
+                    <th>节点ID</th>
+                    <th>名称</th>
+                    <th>显示名</th>
+                    <th>排序</th>
+                    <th>类型</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {volist name="list" id="vo" key="k"}
+                    <tr id="{$vo.id}" pid="{$vo.pid}">
+                        <td><input class="ids" type="checkbox" value="{$vo.id}" name="id[]"></td>
+                        <td>{$k}</td>
+                        <td align="left" class="tree" style="cursor: pointer;">{$vo.fullname}</td>
+                        <td>{$vo.id}</td>
+                        <td>{$vo.name}</td>
+                        <td>{$vo.title}</td>
+                        <td>{$vo.sort}</td>
+                        <td>{$vo.level}</td>
+                        <td>{$vo.statusTxt}</td>
+                        <td>
+                          <a title="编辑" class="label label-primary" href="{:url('Access/nodeAdd', array('id' => $vo['id']))}">编辑</a>
+                          {eq name="vo[status]" value="0"}<a class="label label-info js-start" link="{:url('changeStatus', array('id' => $vo['id'], 'model'=>'node'))}" href="javascript:void(0);">启用</a>&nbsp;{/eq}
+                          {eq name="vo[status]" value="1"}<a class="label label-warning js-stop" link="{:url('changeStatus', array('id' => $vo['id'], 'model'=>'node'))}" href="javascript:void(0);">禁用</a>&nbsp;{/eq}
+                          {neq name="vo[status]" value="10"}<a class="label label-danger js-del" link="{:url('changeStatus', array('id' => $vo['id'], 'model'=>'node'))}" href="javascript:void(0);">删除</a>&nbsp;{/neq}
+                        </td>
+                    </tr>
+                {/volist}
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+</div>
+<!-- 内容区域结束 -->
+{include file="Common/footer" /}

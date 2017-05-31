@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>个人博客</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="__CSS__/admin.min.css">
+    <link href="__CSS__/bootstrap.min.css?version=<?PHP echo date('Y-m-d H',time())?>" rel="stylesheet">
+    <link href="__CSS__/user.css?version=<?PHP echo date('Y-m-d H:i:s',time())?>" rel="stylesheet">
+    <link rel="shortcut icon" href="__PUBLIC__Faicon.ico" type="image/x-icon" />
+
+</head>
+<body>
+<div class="hide-page"></div>
+<!-- 导航栏 -->
+<nav class="navbar navbar-default navbar-user" >
+    <div class="container-fluid user-nav">
+        <div class="navbar-header ">
+            <a class="navbar-brand" href="">
+                <img alt="Brand" src="__IMG__/user/log.jpg">
+            </a>
+        </div>
+        <div class="navbar-music">
+            <audio src="__STATIC__/media/tiankongzhicheng.mp3" autoplay controls loop></audio>
+        </div>
+        <div class="navbar-header pull-right">
+            <ul class="nav navbar-nav">
+                <li><a href="{:url('user/customer/index')}"><span>首页</span><span class="en">Protal</span></a></li>
+                <li><a href="#"><span>慢生活</span><span class="en">Life</span></a></li>
+                <li><a href="#"><span>日志</span><span class="en">Note</span></a></li>
+                <li><a href="#"><span>学无止境</span><span class="en">Learn</span></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- 顶部导航栏结束 -->
+<!-- 中部内容区域开始 -->
+<div class="container-fluid">

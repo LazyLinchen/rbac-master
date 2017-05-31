@@ -1,0 +1,68 @@
+{include file="Common/header"}
+<div class="banner">
+    <div class="banner-inner">
+        <ul>
+            <p>生命就像一条大河</p>
+            <p>时而迷茫，时而疯狂</p>
+            <p>我要飞的更高</p>
+        </ul>
+        <div class="head-portrait pull-right">
+            <a href=""><span>Linchen</span></a>
+        </div>
+    </div>
+</div>
+<div class="artle">
+    <div class="article-header">
+        <h4>
+            <font color="#ff1493">文章列表</font>
+        </h4>
+    </div>
+    <div class="artle-left col-sm-8" >
+        {notempty name="article_list"}
+        {volist name="article_list" id="vo"}
+        <div class="article_list">
+            <label><font {eq name="vo[top]" value="1"}color="red"{/eq}>{$vo.title}</font></lable></label>
+            <div>
+                <div class="thumbimg">
+                    <a href="#" class="thumbnail">
+                        <img src="{$vo.thumb}" alt="...">
+                    </a>
+                </div>
+                <ul class="descript">
+                    <p>{$vo.descript|mb_substr=0,200}</p>
+                    <p class="pull-right"><a href="{:url('article', array('id'=>$vo.id))}">阅读全文>></a></p>
+                </ul>
+            </div>
+            <div class="article_bottom">
+                <p>
+                    <span>{$vo.create_time}</span>
+                    <span>作者：{$vo.name}</span>
+                    <span>分类：{$vo.cname}</span>
+                </p>
+            </div>
+        </div>
+        {/volist}
+        {else /}
+        <p>该人比较懒，还没有留下任何文章！</p>
+        {/notempty}
+        <nav aria-label="Page navigation" class="text-center">
+            {$article_list->render()}
+        </nav>
+    </div>
+    <div class="artle-rigt pull-right">
+        <div class="weather">
+            <iframe allowtransparency="true" frameborder="0" width="100%" height="96" scrolling="no" src="//tianqi.eastday.com/plugin/widget.html?sc=2&z=1&t=0&v=0&d=2&bd=0&k=000000&f=&q=1&a=1&c=59287&w=290&h=96&align=center"></iframe>
+        </div>
+        <div class="new-article">
+            <div class="list-group">
+                <a href="javascript:void (0)" class="list-group-item">最新文章</a>
+                {volist name="new_article_list" id="vo" key="k"}
+                <a href="#" class="list-group-item">{$k}、{$vo.title}</a>
+                {/volist}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{include file="Common/footer"}

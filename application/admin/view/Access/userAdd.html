@@ -1,0 +1,109 @@
+{include file="Common/header" /}
+{include file="Common/left" /}
+<!-- 内容区域 -->
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+    <!-- 地址导航栏 -->
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        {volist name="__PARENT_MENU__" id="vo"}
+            <li>{$vo.title}</li>
+        {/volist}
+    </ul>
+    <div class="panel panel-default panel-height">
+        <div class="panel-boby panel-height">
+            <form class="form form-horizontal builder-form" action="__SELF__" method="post">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">用户名</label>
+                <div class="col-sm-10">
+                  <input type="text" name="name" class="form-control form-text" placeholder="例如:张三" value="{$info.name}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">登录帐号</label>
+                <div class="col-sm-10">
+                  <input type="text" name="username" class="form-control form-text" placeholder="" value="{$info.username}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">登录密码</label>
+                <div class="col-sm-10">
+                  <input type="password" name="password" class="form-control form-text" {notempty name="info"}placeholder="为空则不更新"{/notempty} value="">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">确认密码</label>
+                <div class="col-sm-10">
+                  <input type="password" class="form-control form-text verpassword" placeholder="" value="">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">邮箱地址</label>
+                <div class="col-sm-10">
+                  <input type="email" class="form-control form-text" name="email" placeholder="" value="{$info.email}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">状态</label>
+                <div class="col-sm-10">
+                  <select class="form-control form-text" name="status">
+                    <option value="1" {eq name="info['status']" value="1"}selected{/eq}>启用</option>
+                    <option value="0" {eq name="info['status']" value="0"}selected{/eq}>禁用</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">所属角色</label>
+                <div class="col-sm-10">
+                  {volist name="list" id="vo"}
+                  <label class="checkbox-inline" style="font-size: 14px">
+                     <input type="checkbox" name="role_id[]" value="{$vo.id}" {in name="vo[id]" value="$info.role_id"}checked{/in} />{$vo.name}
+                  </label>
+                  {/volist}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">备注</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control form-text" rows="3" name="remark" placeholder="{$info.remark}"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-10">
+                  <input type="hidden" name="id" value="{$info.id}" />
+                   <button type="submit" class="btn ajax-post btn-primary button-width" target-form="builder-form">确定</button>
+
+                   <button type="button" onclick="javascript:history.back();" class="btn btn-success button-width">返回</button>
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- 内容区域结束 -->
+{include file="Common/footer" /}
+<script type="text/javascript">
+  $(function(){
+    $("button[type=submit]").click(function(){
+      if($("input[name=name]").val()=="" || $("input[name=name]").val()==null){
+        layer.msg('用户名不能为空', {icon: 0});
+        return false;
+      }
+      if($("input[name=username]").val()=="" || $("input[name=username]").val()==null){
+        layer.msg('登录名不能为空', {icon: 0});
+        return false;
+      }
+      var verty = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_])+(.[a-zA-Z0-9_])/;
+      var email = $("input[name=email]").val();
+      if((email!="" || email!=null) & !verty.test(email)){
+        layer.msg('邮箱格式不正确！', {icon: 0});
+        return false;
+      }
+      if($("input[name=password]").val()!=$(".verpassword").val()){
+        layer.msg('密码不一致！', {icon: 0});
+        return false;
+      }
+    });
+  });
+
+</script>

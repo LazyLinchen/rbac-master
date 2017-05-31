@@ -1,0 +1,126 @@
+{include file="Common/header" /}
+{include file="Common/left" /}
+<!-- 内容区域 -->
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+    <!-- 地址导航栏 -->
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        {volist name="__PARENT_MENU__" id="vo"}
+            <li>{$vo.title}</li>
+        {/volist}
+    </ul>
+
+    <div class="panel panel-default panel-height">
+        <div class="panel-boby panel-height">
+            <form class="form form-horizontal builder-form" action="" method="post">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">上级菜单</label>
+                <div class="col-sm-10">
+                  <select class="form-control form-text" name="pid">
+                    <option value="0">根菜单</option>
+                    {$menu['pidOption']}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">菜单标题</label>
+                <div class="col-sm-10">
+                  <input type="text" name="title" class="form-control form-text" placeholder="" value="{$info.title}">
+                </div>
+              </div>
+              <div class="form-group" id='node_url'>
+                <label class="col-sm-2 control-label">菜单链接</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control form-text" style='float:left;' name="url" placeholder="" value="{$info.url}">
+                  <div style='float:left;margin-left:10px;' class='btn btn-primary node'>选择节点</div>
+                </div>
+              </div>
+              {$select_node}
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">选择模块</label>
+                  <div class="col-sm-10">
+                      <input type="text" class="form-text form-control input icon-choosen" name="module" value="{$info.module}" />
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">图标</label>
+                <div class="col-sm-10">
+                  <input type="text" id="_icon_4" class="form-text form-control input icon-choosen" name="icon" value="{$info.icon}" />
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">alt信息</label>
+                  <div class="col-sm-10">
+                      <input type="text" class="form-text form-control input icon-choosen" name="alt" value="{$info.alt}" />
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">排序</label>
+                <div class="col-sm-10">
+                  <input type="text" name="sort" class="form-control form-text" placeholder="" value="{$info.sort}">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-10">
+                  <input type="hidden" name="id" value="{$info.id}" />
+                   <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+                   <button type="submit" class="btn ajax-post btn-primary button-width" target-form="builder-form">确定</button>
+
+                   <!-- Indicates a successful or positive action -->
+                   <button type="button" onclick="javascript:history.back();" class="btn btn-success button-width">返回</button>
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- 内容区域结束 -->
+{include file="Common/footer" /}
+<script type="text/javascript">
+    $(function(){
+        $("#_icon_4").iconChoosen({});
+
+        $(document).on('click','.node',function(){
+          if($('.item_sort')){
+            $('.item_sort').remove();
+          }
+          var url = $(this).prev().val();
+          alert(url);
+          //if(/[\w\d]*\/[\w\d]*\/[\w\d]*/.test(url)){
+          $.post('{:url("getNode")}',{link : url},function(data){
+            $('#node_url').after(data);
+          },'html');
+          //}else{
+             //$.alertMessager('请输入正确的链接格式','success');
+          //}
+        });
+
+        $(document).on('change','.node_select',function(){
+          var id = $(this).val();
+//          alert(id);
+          $.post('{:url("node_change_select")}',{id:id},function(data){
+            var level = data.level;
+            if(level == 1){
+              $('input[name="module"]').val(data.name);
+            }
+            var nodeObj = $('.remove_node');
+            //alert(nodeObj.length);
+            for(var i = level;i<=3;i++){
+              nodeObj.eq(i).remove();
+            }
+            nodeObj.eq(level - 1).after(data.htm_str);
+          },'json');
+        });
+
+        $(document).on('click','.url',function(){
+          var str = '';
+          $.each($('select[name=node_id]>option:selected'),function(k,v){
+            str +=$(this).text()+'/';
+          });
+          str = str.substring(0,str.length-1);
+          $('input[name=url]').attr('value',str);     
+        });
+
+    });
+</script>

@@ -1,0 +1,115 @@
+{include file="Common/header" /}
+{include file="Common/left" /}
+<!-- 内容区域 -->
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+    <!-- 地址导航栏 -->
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        {volist name="__PARENT_MENU__" id="vo"}
+            <li>{$vo.title}</li>
+        {/volist}
+    </ul>
+    <div class="panel panel-success">
+      <div class="panel-body">
+        <form action="__SELF__" method="post" class="builder-form">
+        <table class="table table-striped table-bordered text-left">
+        {volist name="list" id="v"}
+          <tr><td class="text-left"><input type="checkbox" class="checkboxys" cid="{$v.id}" level="{$v.level}" value="{$v.id}:{$v.level}:{$v.pid}" pid="{$v.pid}" name="data[]" />&nbsp;<b>[项目]</b>&nbsp;{$v.title}</td></tr>
+          {volist name="v[data]" id="vo"}
+            <tr><td class="text-left" style="padding-left: 30px;"><input type="checkbox" cid="{$vo.id}" level="{$vo.level}" value="{$vo.id}:{$vo.level}:{$vo.pid}" pid="{$vo.pid}" class="checkboxys" name="data[]" />&nbsp;<b>[模块]</b>&nbsp;{$vo.title}</td></tr>
+              <tr>
+                <td class="text-left" style="padding-left: 60px;">
+                {volist name="vo[data]" id="voo"}
+                  <li style="list-style: none; float: left;margin-right: 15px;"><input type="checkbox" cid="{$voo.id}" level="{$voo.level}" pid="{$voo.pid}" class="checkboxys" value="{$voo.id}:{$voo.level}:{$voo.pid}" name="data[]" />&nbsp;{$voo.title}</li>
+                {/volist}
+                </td>
+              </tr>
+          {/volist}
+        {/volist}
+        </table>
+        <input type="hidden" name="id" value="{$id}" />
+        </form>
+        <div class="col-sm-10">
+             
+             <button type="submit" class="btn ajax-post btn-primary button-width" target-form="builder-form">确定</button>
+
+             <button class="btn btn-primary button-width reset">重置</button>
+
+             <button class="btn btn-primary button-width qk">清空</button>
+
+             <button onclick="javascript:history.back();" class="btn btn-success button-width">返回</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</div>
+<!-- 内容区域结束 -->
+{include file="Common/footer" /}
+<script type="text/javascript">
+  $(function(){
+
+      /*初始化复选框*/
+      function initCheckbox(){
+        $(".checkboxys").prop("checked", false);
+        var access = JSON.parse('{$access}');
+        if(access.length>0){
+          for (var i = 0; i < access.length; i++) {
+            $("input[cid="+access[i]['node_id']+"]").prop("checked", true);
+          }
+        }
+      }
+
+      initCheckbox();
+
+      /*向下选定复选框或取消选定*/
+      function chm(cid, status){
+          $("input[pid="+cid+"]").each(function(){
+              $(this).prop("checked", status);
+              cid = $(this).attr("cid");
+              chm(cid, status);
+          });
+      }
+
+      /*向上选定复选框*/
+      function chu(pid){
+        $("input[cid="+pid+"]").each(function(){
+          $(this).prop("checked", true);
+          pid = $(this).attr('pid');
+          if(pid<1){
+            return ;
+          }
+          chu(pid);
+        });
+      }
+
+      $(".checkboxys").change(function(){
+          if($(this).is(":checked")){
+            chm($(this).attr("cid"), true);
+          }else{
+            chm($(this).attr("cid"), false);
+          }
+          if($(this).attr('level')==3){
+            if($(this).is(":checked")){
+              chu($(this).attr('pid'));
+            }
+          }
+          if($(this).attr('level')==2){
+            if($(this).is(":checked")){
+              chu($(this).attr('pid'));
+            }
+          }
+      });
+
+      //重置到最初状态，以防错误选择
+      $(".reset").click(function(){
+        initCheckbox();
+      });
+
+      //清空以选择的复选框
+      $(".qk").click(function(){
+        $(".checkboxys").attr("checked", false);
+      });
+  });
+
+</script>

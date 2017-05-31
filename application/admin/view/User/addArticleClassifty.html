@@ -1,0 +1,55 @@
+{include file="Common/header" /}
+{include file="Common/left" /}
+<!-- 内容区域 -->
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+    <!-- 地址导航栏 -->
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        {volist name="__PARENT_MENU__" id="vo"}
+            <li>{$vo.title}</li>
+        {/volist}
+    </ul>
+    <div class="panel panel-default panel-height">
+        <div class="panel-boby panel-height">
+            <form class="form form-horizontal builder-form" enctype="multipart/form-data" action="__SELF__" method="post">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">文章分类名称</label>
+                <div class="col-sm-10">
+                  <input type="text" name="cname" class="form-control form-text" placeholder="" value="{$info.cname}">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">状态</label>
+                <div class="col-sm-10">
+                  <select class="form-control form-text" name="status">
+                    <option value="1" {eq name="info['status']" value="1"}selected{/eq}>启用</option>
+                    <option value="0" {eq name="info['status']" value="0"}selected{/eq}>禁用</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">排序</label>
+                  <div class="col-sm-10">
+                      <input type="text" name="sort" class="form-control form-text" placeholder="" value="{$info.sort}">
+                  </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-10">
+                  <input type="hidden" name="id" value="{$info.id}" />
+                   <button type="submit" class="btn ajax-post btn-primary button-width" target-form="builder-form">确定</button>
+
+                   <button type="button" onclick="javascript:history.back();" class="btn btn-success button-width">返回</button>
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- 内容区域结束 -->
+{include file="Common/footer" /}
+<script type="text/javascript">
+  $(function(){
+  });
+
+</script>

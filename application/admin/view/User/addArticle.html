@@ -1,0 +1,121 @@
+{include file="Common/header" /}
+{include file="Common/left" /}
+<!-- 内容区域 -->
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+    <!-- 地址导航栏 -->
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        {volist name="__PARENT_MENU__" id="vo"}
+            <li>{$vo.title}</li>
+        {/volist}
+    </ul>
+    <div class="panel panel-default panel-height" style="overflow:hidden;">
+        <div class="panel-boby panel-height">
+            <form class="form form-horizontal builder-form" enctype="multipart/form-data" action="__SELF__" method="post">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">文章标题</label>
+                <div class="col-sm-10">
+                  <input type="text" name="title" class="form-control form-text" placeholder="" value="{$info.title}">
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">文章题注</label>
+                  <div class="col-sm-10">
+                      <input type="text" name="descript" class="form-control form-text" placeholder="" value="{$info.descript}">
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">标签</label>
+                <div class="col-sm-10">
+                  <input type="text" name="label" class="form-control form-text" placeholder="" value="{$info.label}">
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">文章分类</label>
+                  <div class="col-sm-10">
+                      <select class="form-control form-text" name="ac_id">
+                          {volist name="article_classifty" id="vo"}
+                          <option value="{$vo['id']}" {eq name="vo['id']" value="$info['ac_id']"}selected{/eq}>{$vo['cname']}</option>
+                          {/volist}
+                      </select>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">缩略图</label>
+                <div class="col-sm-10">
+                    <input type="file" name="thumb" class="form-control form-text img_thumb" value="{$info.thumb}">
+                    {notempty name="info[thumb]"}
+                    <img class="thumb" src="{$info['thumb']}" />
+                    <button type="button" class="btn btn-success del_img button-width">删除图片</button>
+                    {/notempty}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">状态</label>
+                <div class="col-sm-10">
+                  <select class="form-control form-text" name="status" style="width: 30%; float: left">
+                    <option value="1" {eq name="info['status']" value="1"}selected{/eq}>启用</option>
+                    <option value="0" {eq name="info['status']" value="0"}selected{/eq}>禁用</option>
+                  </select>
+                    <label class="col-sm-2 control-label" >置顶</label>
+                    <select class="form-control form-text" name="top" style="width: 30%; float: left">
+                        <option value="1" {eq name="info['top']" value="1"}selected{/eq}>置顶</option>
+                        <option value="0" {eq name="info['top']" value="0"}selected{/eq}>取消</option>
+                    </select>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-2 control-label">内容</label>
+                  <div class="col-sm-10" sty>
+                      <textarea id="description" name="content" style="">{$info.content}</textarea>
+                  </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-10">
+                   <input type="hidden" name="id" value="{$info.id}" />
+                   <button type="button" class="btn ajax-pst submit btn-primary button-width" target-form="builder-form">确定</button>
+
+                   <button type="button" onclick="javascript:history.back();" class="btn btn-success button-width">返回</button>
+                </div>
+              </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- 内容区域结束 -->
+{include file="Common/footer" /}
+<script type="text/javascript" src="__STATIC__kindeditor/kindeditor-all.js" charset="utf-8"></script>
+<script type="text/javascript" src="__STATIC__/kindeditor/lang/zh_CN.js"></script>
+<script type="text/javascript">
+    KindEditor.ready(function(K) {
+        description = K.create('#description', {
+            allowFileManager: true,
+            width: '100%',
+            height: '400px',
+            cssPath: [
+                '__STATIC__kindeditor/themes/default/default.css',
+            ],
+            resizeType: 1,
+            pasteType: 2,
+            extraFileUploadParams: {
+                session_id: '__USERID__'
+            },
+            afterBlur: function() {
+                this.sync();
+            },
+        });
+    });
+    $(function(){
+        $(".del_img").click(function(){
+            $("input[name=thumb]").removeAttr('value');
+            $(".thumb").remove();
+            $(this).after("<input type='hidden' name='thumb_del' value='1' />");
+            $(this).remove();
+        });
+        $(".submit").click(function () {
+            commonAjaxSubmit();
+        });
+
+    });
+</script>

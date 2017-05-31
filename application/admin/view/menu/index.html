@@ -1,0 +1,91 @@
+{include file="Common/header" /}
+{include file="Common/left" /}
+<!-- 内容区域 -->
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+    <!-- 地址导航栏 -->
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        {volist name="__PARENT_MENU__" id="vo"}
+            <li>{$vo.title}</li>
+        {/volist}
+    </ul>
+    <!-- 面板 -->
+    <div class="panel panel-success">
+      <div class="panel-body ">
+        <!-- 内联表单 -->
+        <div class="container-fluid">
+            <form class="form-inline col-lg-5 col-md-5 col-sm-5">
+              <div class="form-group">
+                <input type="text" class="form-control" name="keyword" placeholder="模块名称" value="{$keyword}">
+              </div>
+              <button type="submit" class="btn btn-default">搜索</button>
+              <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+            </form>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 pull-right text-center">
+
+              <a class="btn btn-primary active" href="{:url('addMenu')}" role="button">添加</a>
+
+              <!-- Contextual button for informational alert messages -->
+              <a class="btn btn-info active js-Allstop" link="{:url('menuStatus')}" href="javascript:void(0);" role="button">禁用</a>
+
+              <!-- Indicates caution should be taken with this action -->
+              <a class="btn btn-warning active js-Allstart" link="{:url('menuStatus')}" href="javascript:void(0);" role="button">启用</a>
+
+              <!-- Indicates a dangerous or potentially negative action -->
+              <a class="btn btn-danger active js-Alldel" link="{:url('menuStatus')}" href="javascript:void(0);" role="button">删除</a>
+
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-success">
+      <div class="panel-body ">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" class="check-all" name="all"></th>
+                    <th>ID</th>
+                    <th>标题</th>
+                    <th>链接</th>
+                    <th>模块</th>
+                    <th>图标</th>
+                    <th>排序</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {volist name="list" id="vo" key="k"}
+                    <tr id="{$vo.id}" pid="{$vo.pid}">
+                        <td><input class="ids" type="checkbox" value="{$vo['id']}" name="ids[]"></td>
+                        <td>{$vo.id}</td>
+                        <td align="left" class="tree" style="cursor: pointer;">{$vo.fullname}</td>
+                        <td>{$vo.url}</td>
+                        <td>{$vo.module}</td>
+                        <td><i class="{$vo.icon}"></i></td>
+                        <td>{$vo.sort}</td>
+                        <td>
+                          {eq name='vo.status' value='0'}
+                              <i class="fa fa-ban text-danger"></i>
+                            {else /}
+                              <i class="fa fa-check text-success">
+                            {/eq}
+                        </td>
+                        <td>
+                          <a title="编辑" class="label label-primary" href="{:url('addMenu', array('id' => $vo['id']))}">编辑</a>
+                          {eq name="vo[status]" value="0"}<a class="label label-info js-start" link="{:url('MenuStatus', array('id' => $vo['id']))}" href="javascript:void(0);">启用</a>&nbsp;{/eq}
+                          {eq name="vo[status]" value="1"}<a class="label label-warning js-stop" link="{:url('MenuStatus', array('id' => $vo['id']))}" href="javascript:void(0);">禁用</a>&nbsp;{/eq}
+                          {neq name="vo[status]" value="10"}<a class="label label-danger js-del" link="{:url('MenuStatus', array('id' => $vo['id']))}" href="javascript:void(0);">删除</a>&nbsp;{/neq}
+                        </td>
+                    </tr>
+                {/volist}
+            </tbody>
+        </table>
+      </div>
+    </div>
+
+</div>
+<!-- 内容区域结束 -->
+{include file="Common/footer" /}

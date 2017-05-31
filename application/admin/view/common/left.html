@@ -1,0 +1,32 @@
+<div id="sidebar" class="col-xs-12 col-sm-2 sidebar" style="padding: 0; z-index: 99;">
+    <!-- 菜单区域 -->
+    <button id="sidebar-toggle" class="btn btn-default btn-block hidden-xs" title="切换左侧菜单">
+        <i class="fa fa-bars"></i>
+    </button>
+
+    <div class="panel-group" role="tablist">
+        {volist name="__SIDE_MENU_LIST__" id="vo"}
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab">
+                    <h4 class="panel-title"><a class="menu_tab" data-toggle="collapse" href="#side-menu{$key}">
+                        <i class="{$vo.icon}"></i> 
+                        <span class="sidebar-title">{$vo.title}</a></span>
+                    </h4>
+                </div>
+                <div id="side-menu{$key}" class="panel-collapse collapse in" role="tabpanel">
+
+                    <div class="list-group">
+                        {volist name="vo._child" id="vo_child"}
+                            <a class="list-group-item {php} if(in_array($vo_child['id'], $__PARENT_MENU_ID__)) echo 'active'; {/php}"
+                            href="{:url($vo_child['url'])}">
+                                <i class="{$vo_child.icon}"  style="margin-left: 15px;"></i> 
+                                <span class="sidebar-title">{$vo_child.title}</span>
+                            </a>
+                        {/volist}
+                    </div>
+
+                </div>
+            </div>
+        {/volist}
+    </div>
+</div>

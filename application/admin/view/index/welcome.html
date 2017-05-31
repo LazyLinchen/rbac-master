@@ -1,0 +1,70 @@
+{include file="Common/header" /}
+{include file="Common/left" /}
+<!-- 内容区域 -->
+<div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+    <!-- 地址导航栏 -->
+    <ul class="breadcrumb">
+        <li><i class="fa fa-map-marker"></i></li>
+        {volist name="__PARENT_MENU__" id="vo"}
+            <li>{$vo.title}</li>
+        {/volist}
+    </ul>
+    <div class="panel panel-default">
+      <div class="panel-heading">Welcome</div>
+      <div class="panel-body">
+        <h4>欢迎使用 基于TinkPHP5开发 后台管理系统！</h4>
+        上次登录IP：{$info.loginip} &nbsp;&nbsp;上次登录时间：{$info.last_time}<br />
+        本次登录IP：{$info.remo_ip} &nbsp;&nbsp;本次登录时间：{$info.logintime}<br />
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">服务器信息</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered">
+            <tr><td>服务器操作系统</td><td>{$info.system}</td></tr>
+            <tr><td>服务器端口</td><td>{$info.server_port}</td></tr>
+            <tr><td>服务器地址</td><td>{$info.server_addr}</td></tr>
+            <tr><td>服务器解析引擎</td><td>{$info.server_eng}</td></tr>
+            <tr><td>域名</td><td>{$info.domain}</td></tr>
+            <tr><td>服务器语言</td><td>{$info.lang}</td></tr>
+            <tr><td>服务器当前时间</td><td id="jstime"></td></tr>
+        </table>
+      </div>
+    </div>
+</div>
+{include file="Common/footer" /}
+<script type="text/javascript">
+window.onload=function(){
+  startTime();
+}
+function startTime(){
+  var today=new Date()
+  var y=today.getFullYear();
+  var n=today.getMonth();
+  n=n+1;
+  if(n<10){
+          n = '0'+n;
+  }
+  var d=today.getDate();
+  if(d<10){
+          d = '0'+d;
+  }
+  var h=today.getHours();
+  if(h<10){
+          h = '0'+h;
+  }
+  var m=today.getMinutes();
+  if(m<10){
+          m = '0'+m;
+  }
+  var s=today.getSeconds();
+  if(s<10){
+          s = '0'+s;
+  }
+  s=document.getElementById('jstime').innerHTML=y+"-"+n+"-"+d+"\t"+h+":"+m+":"+s
+  t=setTimeout('startTime()',500)
+}
+</script>
